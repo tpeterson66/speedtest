@@ -14,16 +14,15 @@ import (
 )
 
 func main() {
+	// env var for the interval check
 	interval := os.Getenv("CHECK_INTERVAL")
 	intVar, err := strconv.Atoi(interval)
 	if err != nil {
 		log.Panic(err)
 	}
 
-	fmt.Printf("Starting speedtest application, will check every %v minutes", intVar)
 	gocron.Every(uint64(intVar)).Minutes().Do(task)
 	<-gocron.Start()
-	// task()
 }
 
 func task() {
@@ -39,34 +38,23 @@ func task() {
 	// Use blocking write client for writes to desired bucket
 	writeAPI := client.WriteAPIBlocking(org, bucket)
 	var speedtestClient = speedtest.New()
-
-	// Use a proxy for the speedtest. eg: socks://127.0.0.1:7890
-	// speedtest.WithUserConfig(&speedtest.UserConfig{Proxy: "socks://127.0.0.1:7890"})(speedtestClient)
-
-	// Select a network card as the data interface.
-	// speedtest.WithUserConfig(&speedtest.UserConfig{Source: "192.168.1.101"})(speedtestClient)
-
 	user, _ := speedtestClient.FetchUserInfo()
-	// Get a list of servers near a specified location
-	// user.SetLocationByCity("Detroit")
-	// user.SetLocationByCity("Tokyo")
-	// user.SetLocation("Osaka", 34.6952, 135.5006)
 
 	serverList, _ := speedtestClient.FetchServers(user)
-	// targets, _ := serverList.FindServer([]int{})
-	targets, _ := serverList.FindServer([]int{17755})
+	targets, _ := serverList.FindServer([]int{17755}) // using detroit, MI
 
 	for _, s := range targets {
-		// Please make sure your host can access this test server,
-		// otherwise you will get an error.
-		// It is recommended to replace a server at this time
 		s.PingTest()
 		s.DownloadTest()
 		s.UploadTest()
 
+		// convert latency string to int64
 		latency := int64(s.Latency / time.Millisecond)
-		fmt.Println(latency)
+
+		// print results to console
 		fmt.Printf("Latency: %s, Download: %f, Upload: %f\n", s.Latency, s.DLSpeed, s.ULSpeed)
+
+		// post results to influxdb
 		p := influxdb2.NewPointWithMeasurement("stat").
 			AddTag("unit", "speed").
 			AddField("upload", s.ULSpeed).

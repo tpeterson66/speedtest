@@ -1,0 +1,428 @@
+{
+  "meta": {
+   "version": "1",
+   "type": "dashboard",
+   "name": "Speedtest-Template",
+   "description": "template created from dashboard: Speedtest"
+  },
+  "content": {
+   "data": {
+    "type": "dashboard",
+    "attributes": {
+     "name": "Speedtest",
+     "description": ""
+    },
+    "relationships": {
+     "label": {
+      "data": []
+     },
+     "cell": {
+      "data": [
+       {
+        "type": "cell",
+        "id": "0ae424a385ffb000"
+       },
+       {
+        "type": "cell",
+        "id": "0ae424bf36ffb000"
+       },
+       {
+        "type": "cell",
+        "id": "0ae42501dbbfb000"
+       }
+      ]
+     },
+     "variable": {
+      "data": []
+     }
+    }
+   },
+   "included": [
+    {
+     "id": "0ae424a385ffb000",
+     "type": "cell",
+     "attributes": {
+      "x": 0,
+      "y": 0,
+      "w": 6,
+      "h": 4
+     },
+     "relationships": {
+      "view": {
+       "data": {
+        "type": "view",
+        "id": "0ae424a385ffb000"
+       }
+      }
+     }
+    },
+    {
+     "id": "0ae424bf36ffb000",
+     "type": "cell",
+     "attributes": {
+      "x": 6,
+      "y": 0,
+      "w": 6,
+      "h": 4
+     },
+     "relationships": {
+      "view": {
+       "data": {
+        "type": "view",
+        "id": "0ae424bf36ffb000"
+       }
+      }
+     }
+    },
+    {
+     "id": "0ae42501dbbfb000",
+     "type": "cell",
+     "attributes": {
+      "x": 0,
+      "y": 4,
+      "w": 6,
+      "h": 4
+     },
+     "relationships": {
+      "view": {
+       "data": {
+        "type": "view",
+        "id": "0ae42501dbbfb000"
+       }
+      }
+     }
+    },
+    {
+     "type": "view",
+     "id": "0ae424a385ffb000",
+     "attributes": {
+      "name": "Download Speed",
+      "properties": {
+       "shape": "chronograf-v2",
+       "queries": [
+        {
+         "text": "from(bucket: \"speedtest\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"stat\")\n  |> filter(fn: (r) => r[\"_field\"] == \"download\")\n  |> filter(fn: (r) => r[\"unit\"] == \"speed\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+         "editMode": "advanced",
+         "name": "",
+         "builderConfig": {
+          "buckets": [],
+          "tags": [
+           {
+            "key": "_measurement",
+            "values": [],
+            "aggregateFunctionType": "filter"
+           }
+          ],
+          "functions": [
+           {
+            "name": "mean"
+           }
+          ],
+          "aggregateWindow": {
+           "period": "auto",
+           "fillValues": false
+          }
+         }
+        }
+       ],
+       "axes": {
+        "x": {
+         "bounds": [
+          "",
+          ""
+         ],
+         "label": "",
+         "prefix": "",
+         "suffix": "",
+         "base": "10",
+         "scale": "linear"
+        },
+        "y": {
+         "bounds": [
+          "",
+          ""
+         ],
+         "label": "Download Speed",
+         "prefix": "",
+         "suffix": "mbps",
+         "base": "10",
+         "scale": "linear"
+        }
+       },
+       "type": "line-plus-single-stat",
+       "legend": {},
+       "colors": [
+        {
+         "id": "base",
+         "type": "text",
+         "hex": "#BF3D5E",
+         "name": "ruby",
+         "value": 0
+        },
+        {
+         "id": "97287a0c-ff4d-44f3-ad25-2e9612ade8eb",
+         "type": "text",
+         "hex": "#FFB94A",
+         "name": "pineapple",
+         "value": 100
+        },
+        {
+         "id": "2e991198-d8ff-42ca-a28c-55ce6c9a2191",
+         "type": "text",
+         "hex": "#7CE490",
+         "name": "honeydew",
+         "value": 200
+        }
+       ],
+       "prefix": "",
+       "suffix": "",
+       "decimalPlaces": {
+        "isEnforced": true,
+        "digits": 2
+       },
+       "note": "",
+       "showNoteWhenEmpty": false,
+       "xColumn": "_time",
+       "generateXAxisTicks": [],
+       "xTotalTicks": 0,
+       "xTickStart": 0,
+       "xTickStep": 0,
+       "yColumn": "_value",
+       "generateYAxisTicks": [],
+       "yTotalTicks": 0,
+       "yTickStart": 0,
+       "yTickStep": 0,
+       "shadeBelow": false,
+       "position": "overlaid",
+       "timeFormat": "",
+       "hoverDimension": "auto",
+       "legendColorizeRows": true,
+       "legendOpacity": 1,
+       "legendOrientationThreshold": 100000000
+      }
+     }
+    },
+    {
+     "type": "view",
+     "id": "0ae424bf36ffb000",
+     "attributes": {
+      "name": "Upload Speed",
+      "properties": {
+       "shape": "chronograf-v2",
+       "queries": [
+        {
+         "text": "from(bucket: \"speedtest\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"stat\")\n  |> filter(fn: (r) => r[\"_field\"] == \"upload\")\n  |> filter(fn: (r) => r[\"unit\"] == \"speed\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+         "editMode": "advanced",
+         "name": "",
+         "builderConfig": {
+          "buckets": [],
+          "tags": [
+           {
+            "key": "_measurement",
+            "values": [],
+            "aggregateFunctionType": "filter"
+           }
+          ],
+          "functions": [
+           {
+            "name": "mean"
+           }
+          ],
+          "aggregateWindow": {
+           "period": "auto",
+           "fillValues": false
+          }
+         }
+        }
+       ],
+       "axes": {
+        "x": {
+         "bounds": [
+          "",
+          ""
+         ],
+         "label": "",
+         "prefix": "",
+         "suffix": "",
+         "base": "10",
+         "scale": "linear"
+        },
+        "y": {
+         "bounds": [
+          "",
+          ""
+         ],
+         "label": "Upload",
+         "prefix": "",
+         "suffix": "mbps",
+         "base": "10",
+         "scale": "linear"
+        }
+       },
+       "type": "line-plus-single-stat",
+       "legend": {},
+       "colors": [
+        {
+         "id": "base",
+         "type": "text",
+         "hex": "#BF3D5E",
+         "name": "ruby",
+         "value": 0
+        },
+        {
+         "id": "14f29c52-d5bc-41ea-a885-e82b728f8740",
+         "type": "text",
+         "hex": "#FFB94A",
+         "name": "pineapple",
+         "value": 100
+        },
+        {
+         "id": "21af7157-be6d-4e3d-bb1d-2c0443e0e241",
+         "type": "text",
+         "hex": "#7CE490",
+         "name": "honeydew",
+         "value": 200
+        }
+       ],
+       "prefix": "",
+       "suffix": "",
+       "decimalPlaces": {
+        "isEnforced": true,
+        "digits": 2
+       },
+       "note": "",
+       "showNoteWhenEmpty": false,
+       "xColumn": "_time",
+       "generateXAxisTicks": [],
+       "xTotalTicks": 0,
+       "xTickStart": 0,
+       "xTickStep": 0,
+       "yColumn": "_value",
+       "generateYAxisTicks": [],
+       "yTotalTicks": 0,
+       "yTickStart": 0,
+       "yTickStep": 0,
+       "shadeBelow": false,
+       "position": "overlaid",
+       "timeFormat": "",
+       "hoverDimension": "auto",
+       "legendColorizeRows": true,
+       "legendOpacity": 1,
+       "legendOrientationThreshold": 100000000
+      }
+     }
+    },
+    {
+     "type": "view",
+     "id": "0ae42501dbbfb000",
+     "attributes": {
+      "name": "Latency ms",
+      "properties": {
+       "shape": "chronograf-v2",
+       "queries": [
+        {
+         "text": "from(bucket: \"speedtest\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"stat\")\n  |> filter(fn: (r) => r[\"_field\"] == \"latency\")\n  |> filter(fn: (r) => r[\"unit\"] == \"speed\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+         "editMode": "advanced",
+         "name": "",
+         "builderConfig": {
+          "buckets": [],
+          "tags": [
+           {
+            "key": "_measurement",
+            "values": [],
+            "aggregateFunctionType": "filter"
+           }
+          ],
+          "functions": [
+           {
+            "name": "mean"
+           }
+          ],
+          "aggregateWindow": {
+           "period": "auto",
+           "fillValues": false
+          }
+         }
+        }
+       ],
+       "axes": {
+        "x": {
+         "bounds": [
+          "",
+          ""
+         ],
+         "label": "",
+         "prefix": "",
+         "suffix": "",
+         "base": "10",
+         "scale": "linear"
+        },
+        "y": {
+         "bounds": [
+          "",
+          ""
+         ],
+         "label": "Latency",
+         "prefix": "",
+         "suffix": "ms",
+         "base": "10",
+         "scale": "linear"
+        }
+       },
+       "type": "line-plus-single-stat",
+       "legend": {},
+       "colors": [
+        {
+         "id": "base",
+         "type": "text",
+         "hex": "#7CE490",
+         "name": "honeydew",
+         "value": 0
+        },
+        {
+         "id": "223e86a2-1d43-4958-b89e-79c336bd227c",
+         "type": "text",
+         "hex": "#FFB94A",
+         "name": "pineapple",
+         "value": 10
+        },
+        {
+         "id": "7b62ceaa-96c0-459e-9a33-c87c048f67f5",
+         "type": "text",
+         "hex": "#BF3D5E",
+         "name": "ruby",
+         "value": 20
+        }
+       ],
+       "prefix": "",
+       "suffix": "",
+       "decimalPlaces": {
+        "isEnforced": true,
+        "digits": 2
+       },
+       "note": "",
+       "showNoteWhenEmpty": false,
+       "xColumn": "_time",
+       "generateXAxisTicks": [],
+       "xTotalTicks": 0,
+       "xTickStart": 0,
+       "xTickStep": 0,
+       "yColumn": "_value",
+       "generateYAxisTicks": [],
+       "yTotalTicks": 0,
+       "yTickStart": 0,
+       "yTickStep": 0,
+       "shadeBelow": false,
+       "position": "overlaid",
+       "timeFormat": "",
+       "hoverDimension": "auto",
+       "legendColorizeRows": true,
+       "legendOpacity": 1,
+       "legendOrientationThreshold": 100000000
+      }
+     }
+    }
+   ]
+  },
+  "labels": []
+ }

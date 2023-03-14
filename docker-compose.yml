@@ -1,17 +1,21 @@
 ---
 version: '3.9'
+volumes:
+    influxdb:
 services:
     speedtest:
         container_name: speedtest
-        image: tpeterson66/speedtest:latest
+        image: tpeterson66/speedtest:${IMAGE_TAG}
         environment:
-            - INFLUXDB=${INFLUXDB_TOKEN}
+            - INFLUXDB=${INFLUXDB}
             - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
             - INFLUXDB_ORG=${INFLUXDB_ORG}
             - INFLUXDB_BUCKET=${INFLUXDB_BUCKET}
             - CHECK_INTERVAL=${CHECK_INTERVAL}
         depends_on:
-            - influxdb
+            influxdb:
+                condition: "service_healthy"
+
     influxdb:
         image: influxdb:2.0.7
         container_name: influxdb
@@ -24,6 +28,8 @@ services:
             DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_TOKEN}
         ports:
         - "8086:8086"
+        volumes:
+            - influxdb:/var/lib/influxdb2
         healthcheck:
             test: "curl -f http://localhost:8086/ping"
             interval: 5s

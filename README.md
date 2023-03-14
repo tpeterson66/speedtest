@@ -1,6 +1,6 @@
 # SpeedTest
 
-This is an application stack to monitor the your Internet speeds using InfluxDB. The application is written in go using p[this](github.com/showwin/speedtest-go/speedtest) speedtest project. The code is simple by nature allowing beginners to udnerstand and hopefully alter the code enough to meet their needs.
+This is an application stack to monitor the your Internet speeds using InfluxDB. The application is written in go using [this](https://github.com/showwin/speedtest-go) speedtest project. The code is simple by nature allowing beginners to understand and hopefully alter the code enough to meet their needs.
 
 ## Getting Started
 

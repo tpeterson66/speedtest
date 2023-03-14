@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	"os"
+	"strconv"
 	"time"
 
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
@@ -11,19 +14,30 @@ import (
 )
 
 func main() {
-	gocron.Every(10).Minutes().Do(task)
+	interval := os.Getenv("CHECK_INTERVAL")
+	intVar, err := strconv.Atoi(interval)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	fmt.Printf("Starting speedtest application, will check every %v minutes", intVar)
+	gocron.Every(uint64(intVar)).Minutes().Do(task)
 	<-gocron.Start()
 	// task()
 }
 
 func task() {
+	org := os.Getenv("INFLUXDB_ORG")
+	bucket := os.Getenv("INFLUXDB_BUCKET")
+	database := os.Getenv("INFLUXDB")
+	token := os.Getenv("INFLUXDB_TOKEN")
 	dt := time.Now()
 	fmt.Println("Current date and time is: ", dt.String())
 	// create client
-	client := influxdb2.NewClient("http://localhost:8086", "F-QFQpmCL9UkR3qyoXnLkzWj03s6m4eCvYgDl1ePfHBf9ph7yxaSgQ6WN0i9giNgRTfONwVMK1f977r_g71oNQ==")
+	client := influxdb2.NewClient(database, token)
 
 	// Use blocking write client for writes to desired bucket
-	writeAPI := client.WriteAPIBlocking("3e645a0874fc54c7", "speedtest")
+	writeAPI := client.WriteAPIBlocking(org, bucket)
 	var speedtestClient = speedtest.New()
 
 	// Use a proxy for the speedtest. eg: socks://127.0.0.1:7890

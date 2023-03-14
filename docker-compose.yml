@@ -9,6 +9,7 @@ services:
             - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
             - INFLUXDB_ORG=${INFLUXDB_ORG}
             - INFLUXDB_BUCKET=${INFLUXDB_BUCKET}
+            - CHECK_INTERVAL=${CHECK_INTERVAL}
     influxdb:
         image: influxdb:2.0.7
         container_name: influxdb

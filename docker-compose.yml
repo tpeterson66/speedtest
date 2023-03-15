@@ -5,6 +5,7 @@ volumes:
 services:
     speedtest:
         container_name: speedtest
+        restart: always
         image: tpeterson66/speedtest:${IMAGE_TAG}
         environment:
             - INFLUXDB=${INFLUXDB}
@@ -19,6 +20,7 @@ services:
     influxdb:
         image: influxdb:2.0.7
         container_name: influxdb
+        restart: unless-stopped
         environment:
             DOCKER_INFLUXDB_INIT_MODE: setup
             DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_USERNAME}
